@@ -49,7 +49,7 @@ Route::get('welcome', function () {
 
     //**********************************************/
 
-    $data = Category::where('name', 'like', 'd%')->get();
+    // $data = Category::where('name', 'like', 'n%')->get();
     // $data = Category::with('subCategories')->first();
     // $data = Category::with(['subCategories'])->first();
     // $data = Category::withCount(['subCategories'])->first(); // number of sub categories
@@ -58,17 +58,25 @@ Route::get('welcome', function () {
     //     $query->where('name', 'like', 's%');
     // }])->get();
 
+    // $data = Category::withCount(['subCategories' => function ($query) {
+    //     $query->where('name', 'like', 's%');
+    // }])->with(['subCategories'])->get();
+
+    // $data = Category::with(['subCategories' => function ($query) {
+    //     $query->where('name', 'like', 's%');
+    // }])->withCount(['subCategories'])->get();
+
     // $data = Category::with(['subCategories' => function ($query) {
     //     $query->with(['products' => function ($query) {
     //         $query->where('name', 'like', 's%');
     //     }])->get();
     // }])->get();
 
-    // $data = Category::with(['subCategories' => function ($query) {
-    //     $query->with(['products' => function ($query) {
-    //         $query->where('name', 'like', 's%');
-    //     }])->withCount(['products'])->get();
-    // }])->withCount(['subCategories'])->get();
+    $data = Category::with(['subCategories' => function ($query) {
+        $query->with(['products' => function ($query) {
+            $query->where('name', 'like', 's%');
+        }])->withCount(['products'])->get();
+    }])->withCount(['subCategories'])->get();
 
     return response()->json(['data' => $data]);
     // return response()->json(['data' => 'Welcome Here']);
